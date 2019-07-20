@@ -22,3 +22,38 @@ select,
 textarea {
     max-width: 280px;
 }
+
+ .panel-footer {
+    background-color: transparent !important;
+}
+
+.form-busca-popup > .col-sm-4 {
+    width: 31%;
+}
+
+
+
+.form-busca-popup-resultados {
+    background: #F7F7F7;
+    border-top: 1px dashed #ccc;
+    overflow: hidden;
+    padding: 20px;
+}
+
+    .form-busca-popup-resultados:empty {
+        border: none;
+        padding: 0;
+    }
+
+a.form-popup-link {
+    border-bottom: 1px solid #ddd;
+    margin: 10px 0 10px -15px;
+    display: block;
+    clear: both;
+    overflow: hidden;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+.form-group > div > label.control-label {
+    margin: 0 10px 0 40px;
+}

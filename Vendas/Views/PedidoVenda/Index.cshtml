@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Vendas.Models.PedidoVenda>
+
+@{
+    ViewBag.Title = "Listar Pedido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Listar Pedido</h2>
+<button type="button" class="btn btn-add pull-right" onclick="adicionar('PedidoVenda')">
+    <span class="glyphicon glyphicon-plus"></span>Adicionar
+</button>
+<table class="table">
+    <tr>
+        <th class="col-md-2">
+            @Html.DisplayName("N° do Pedido")
+        </th>
+        <th class="col-md-6">
+            @Html.DisplayNameFor(model => model.Cliente.xRazaoSocialCliente)
+        </th>
+        <th class="col-md-2">
+            @Html.DisplayNameFor(model => model.dtEmissao)
+        </th>
+        <th class="col-md-2">
+            @Html.DisplayNameFor(model => model.vValorTotalPedido)
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.idPedidoVenda)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.xRazaoSocialCliente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dtEmissao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.vValorTotalPedido)
+            </td>
+        </tr>
+    }
+
+</table>
+@section Scripts {
+    @Scripts.Render("~/scripts/Util.js")
+}
+
+<script>
+    function posLoad() {
+    }
+</script>

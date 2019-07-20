@@ -1,0 +1,43 @@
+﻿@model Vendas.Models.PedidoVendaItem
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PedidoVendaItem</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.vQuantidade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vQuantidade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vValorUnitario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vValorUnitario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vValorTotalProduto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vValorTotalProduto)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idPedidoVendaItem }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

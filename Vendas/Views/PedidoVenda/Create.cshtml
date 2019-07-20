@@ -1,0 +1,139 @@
+﻿@model Vendas.Models.PedidoVenda
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Pedido de Venda</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+
+            @Html.LabelFor(x => x.Cliente.xRazaoSocialCliente, new { @class = "col-sm-2 control-label obrigatorio", @for = "idCliente" })
+            <div class="col-sm-3">
+                @Html.HiddenFor(x => x.idCliente)
+                @Html.TextBox("clienteNome", ViewData["NomeCliente"], new { @class = "form-control readonly", @readonly = "true" })
+
+            </div>
+            <div class="col-sm-2">
+                @Html.TextBox("clienteRua", ViewData["RuaCliente"], new { @class = "form-control readonly", @readonly = "true" })
+            </div>
+            <div class="col-sm-2">
+                @Html.TextBox("clienteCidade", ViewData["CidadeCliente"], new { @class = "form-control readonly", @readonly = "true" })
+            </div>
+            <div class="col-sm-1 form-browse">
+                <button type="button" class="btn btn-info btn-icon" data-toggle="modal" data-target="#modalSearchCliente">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+            <div class="col-sm-1 form-remover">
+                <button type="button" class="btn btn-danger btn-icon" onclick="removerCliente();">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+            <div class="col-sm-11 form-validacao">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-4">
+                    @Html.ValidationMessageFor(x => x.idCliente, "", new { @class = "text-danger" })
+                </div>
+            </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.dtEmissao, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dtEmissao, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                @Html.ValidationMessageFor(model => model.dtEmissao, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.vValorTotalPedido, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.vValorTotalPedido, new { htmlAttributes = new { @class = "form-control ",@readonly= "readonly" }  } )
+                @Html.ValidationMessageFor(model => model.vValorTotalPedido, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-horizontal">
+            @Html.Hidden("qtdItens", 0)
+            @Html.Hidden("itemSelecionado");
+            <div>
+                <button id="btnInserir" type="button" class="btn btn-add pull-right" disabled onclick="inserirItem()">
+                    <span class="glyphicon glyphicon-plus"></span> Adicionar Item
+                </button>
+            </div>
+            <div class="form-group"></div>
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <b>Produto</b>
+                </div>
+                <div class="col-sm-2">
+                    <b>Valor Unitário</b>
+                </div>
+                <div class="col-sm-1">
+                    <b>Quantidade</b>
+                </div>
+                <div class="col-sm-3">
+                    <b>Valor Total do Produto</b>
+                </div>
+                <div class="col-sm-1">
+                    <b>Remover</b>
+                </div>
+            </div>
+            <div id="divItens_n">
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <input class="btn btn-default" type="button" value="Voltar" onclick="window.history.back();" />
+            <input class="btn btn-success pull-right" type="submit"  value="Salvar" />
+        </div>
+    </div>
+}
+@Html.Partial("~/Views/Shared/BuscaCliente.cshtml")
+@Html.Partial("~/Views/Shared/BuscaProduto.cshtml")
+@Scripts.Render("~/scripts/BuscaCliente.js")
+@Scripts.Render("~/scripts/BuscaProduto.js")
+@Scripts.Render("~/scripts/Itens.js")
+@Scripts.Render("~/scripts/Util.js")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function calcularTotal(i) {
+        if (document.getElementById("ProdutoQtd_" + i) != undefined && document.getElementById("ProdutoValorUnitario_" + i) != undefined && document.getElementById("ProdutoValorTotal_" + i) != undefined) {
+
+            var valorUnitario = parseFloat(document.getElementById("ProdutoValorUnitario_" + i).value.replace(/\./g, "").replace(",", "."));
+            var qtd = parseFloat(document.getElementById("ProdutoQtd_" + i).value.replace(/\./g, "").replace(",", "."));
+            document.getElementById("ProdutoValorTotal_" + i).value = valorUnitario * qtd;
+
+            var total = document.getElementById("ProdutoValorTotal_" + i).value;
+            document.getElementById("ProdutoValorTotal_" + i).value = number_format(total, 2, ',', '.');
+            calcularTotalCompra();
+        }
+    }
+
+    function calcularTotalCompra() {
+           document.getElementById("vValorTotalPedido").value = 0;
+
+        for (var i = 0; i < document.getElementById("qtdItens").value; i++) {
+            if (document.getElementById("ProdutoValorTotal_" + i) != undefined) {
+                document.getElementById("vValorTotalPedido").value = parseFloat(document.getElementById("vValorTotalPedido").value.replace(/\./g, "").replace(",", ".")) + parseFloat(document.getElementById("ProdutoValorTotal_" + i).value.replace(/\./g, "").replace(",", "."));
+
+                document.getElementById("vValorTotalPedido").value = number_format(document.getElementById("vValorTotalPedido").value, 2, ',', '.');
+            }
+        }
+    }        
+    function posLoad() {
+    }
+</script>

@@ -1,0 +1,37 @@
+﻿
+
+<div id="modalSearchCliente" class="modal fade" role="dialog">
+    @using (Ajax.BeginForm("Buscar", "Cliente", null,
+                                                new AjaxOptions { HttpMethod = "post", OnSuccess = "buscarCliente" }, new { id = "formBuscaCliente", @class = "form-horizontal" }))
+    {
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 style="text-align: center" class="modal-title">
+                        Busca de Cliente
+                    </h1>
+                    <button type="button" class="close" data-dismiss="modal" title="Fechar busca">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group form-busca-popup">
+                            <div class="form-group">
+                                @Html.Label("Nome", new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="clienteNomeSearch" name="Cliente.xRazaoSocialCliente" type="text" value="">
+                                </div>
+                                <button type="submit" class="btn btn-success" onclick="return validaBuscaCliente();">
+                                    <span class="glyphicon glyphicon-search"></span>Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="listaClientes" class="form-busca-popup-resultados"></div>
+            </div>
+        </div>
+    }
+</div>
